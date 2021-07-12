@@ -35,6 +35,16 @@
   :prefix "evil-colemak-basics-"
   :group 'evil)
 
+(defcustom evil-colemak-basics-layout-mod nil
+  "Which Colemak layout mod to use.
+
+Colemak Mod-DH, also known as Colemak Mod-DHm, has m where the h
+key is on qwerty. This means we need to swap the h and m
+bindings. No other changes are necessary."
+  :group 'evil-colemak-basics
+  :type '(choice (const :tag "default" nil)
+                 (const :tag "mod-dh" mod-dh)))
+
 (defcustom evil-colemak-basics-rotate-t-f-j t
   "Whether to keep find-char and end of word jumps at their qwerty position.
 
@@ -118,6 +128,14 @@ rotated; see evil-colemak-basics-rotate-t-f-j."
           "j" 'evil-snipe-j
           "J" 'evil-snipe-J))
        (t (user-error "Invalid evil-colemak-basics-char-jump-commands configuration"))))
+    (when (eq evil-colemak-basics-layout-mod 'mod-dh)
+      (evil-define-key '(motion normal visual) keymap
+	"m" 'evil-next-line)
+      (evil-define-key 'normal keymap
+	"h" 'evil-set-marker)
+      (evil-define-key 'motion keymap
+	"H" 'evil-window-top
+	"M" 'evil-window-middle))
     keymap))
 
 (defvar evil-colemak-basics-keymap
